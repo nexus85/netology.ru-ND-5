@@ -1,9 +1,6 @@
 let Pokemon = require('./../init/Pokemon');
 
 class PokemonList extends Array {
-  constructor(...pokemons) {
-    super(...pokemons);
-  }
 
   add(name, level) {
     this.push(new Pokemon(name, level));
@@ -18,23 +15,13 @@ class PokemonList extends Array {
   }
 
   move(target,name) {
-    for (let item of this) {
-      if (item.name === name) {
-        var itemIndex, found;
-        itemIndex = this.indexOf(item);
-        item = this.splice(itemIndex, 1).shift();
-        target.push(item);
-      }
-    }
+      let pokemon = this.find(item => item.name === name);
+      target.push(this.splice(this.indexOf(pokemon), 1)[0]);
   }
 
   max() {
-    const MAX_LEVEL = Math.max.apply(null, this);
-    for (let item of this) {
-      if (item.level === MAX_LEVEL) {
-        return item;
-      }
-    }
+      const MAX_LEVEL = Math.max(...this);
+      return this.find(item => item.level === MAX_LEVEL);
   }
 }
 

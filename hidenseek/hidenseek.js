@@ -1,9 +1,9 @@
 const FS = require('fs');
-var {Pokemon, PokemonList} = require('./../init/PokemonList'),
+let {PokemonList} = require('./../init/PokemonList'),
     pokemons = require('./../init/pokemon.json');
 
 //перемешиваие массива для .sort()
-var shuffle = function () {
+const SHUFFLE = function () {
     return Math.random() - 0.5;
 }
 
@@ -35,7 +35,7 @@ function createFolders(path) {
 
 //перемешиваем массив с покемонами и оставляем нужное количество
 function randomPokemons(pokemons) {
-    pokemons.sort(shuffle);
+    pokemons.sort(SHUFFLE);
     let n = pokemons.length < 3 ? pokemons.length : 3;
     pokemons.splice(0, pokemons.length - n);
     return pokemons;
@@ -47,7 +47,7 @@ function randomFolders(pokemons) {
     for (let i = 1; i < 11; i++) {
         arr.push(i);
     }
-    arr.sort(shuffle);
+    arr.sort(SHUFFLE);
     let n = pokemons.length < 3 ? pokemons.length : 3;
     arr.splice(0, arr.length - n);
     return arr;
@@ -56,13 +56,16 @@ function randomFolders(pokemons) {
 //прячем покемонов
 function hidePokemons(path, folders, pokemons) {
     return new Promise((resolve, reject) => {
+        let lost = new PokemonList;
         for (let i of folders) {
             i = i < 10 ? `/0${i}` : i = `/${i}`;
             let text = `${pokemons[0].name}|${pokemons[0].level}`;
             FS.writeFile(`${path}${i}/pokemon.txt`, text);
-            pokemons.shift();
+            lost.push(pokemons.shift());
         }
-        resolve();
+        console.log(`Hidden pokemons:\r\t`);
+        lost.show();
+        resolve(lost);
     });
 }
 
@@ -102,8 +105,6 @@ exports.seek = function (path) {
                         found.add(item.split('|')[0],item.split('|')[1]);
                     }
                 }
-                console.log(`Hidden pokemons:\r\t`);
-                found.show();
                 resolve(found);
             });
     });
