@@ -21,7 +21,7 @@ FOUND.show();
 
 console.log('-------------------------------\n');
 
-LOST.move(FOUND,'Charmander');
+LOST.move(FOUND,'Bulbasaur');
 
 LOST.show();
 FOUND.show();
