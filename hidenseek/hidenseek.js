@@ -2,8 +2,8 @@ const FS = require('fs');
 let {PokemonList} = require('./../init/PokemonList'),
     pokemons = require('./../init/pokemon.json');
 
-//перемешиваие массива для .sort()
-const SHUFFLE = function () {
+//перемешивание массива для .sort()
+const shuffle = function () {
     return Math.random() - 0.5;
 }
 
@@ -35,7 +35,7 @@ function createFolders(path) {
 
 //перемешиваем массив с покемонами и оставляем нужное количество
 function randomPokemons(pokemons) {
-    pokemons.sort(SHUFFLE);
+    pokemons.sort(shuffle);
     let n = pokemons.length < 3 ? pokemons.length : 3;
     pokemons.splice(0, pokemons.length - n);
     return pokemons;
@@ -47,7 +47,7 @@ function randomFolders(pokemons) {
     for (let i = 1; i < 11; i++) {
         arr.push(i);
     }
-    arr.sort(SHUFFLE);
+    arr.sort(shuffle);
     let n = pokemons.length < 3 ? pokemons.length : 3;
     arr.splice(0, arr.length - n);
     return arr;

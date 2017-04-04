@@ -3,7 +3,7 @@
 let {Pokemon, PokemonList}  = require('./../init/PokemonList'),
     pokemons                = require('./../init/pokemon.json');
 
-let hidenseek = require('./hidenseek');
+let hidenseek = require('./hidenseek2');
 
 const POKEMONS = pokemons.map(
     item => new Pokemon(item.name, item.level)
@@ -14,7 +14,7 @@ const POKEMONS_LIST = new PokemonList(...POKEMONS);
 const PATH = 'field';
 
 hidenseek.hide(PATH, POKEMONS_LIST)
-    .then(() => hidenseek.seek(PATH));
+    .then((pokemons) => hidenseek.seek(PATH));
 
 /*if (!process.argv[3]) {
     hidenseek.hide(PATH, POKEMONS_LIST)

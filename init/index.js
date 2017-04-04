@@ -27,4 +27,4 @@ LOST.show();
 FOUND.show();
 
 let maxLevel = FOUND.max();
-console.log(`Max-Level Pokemon in list:\rName: ${maxLevel.name}, level: ${maxLevel.level}`);
+maxLevel.show();

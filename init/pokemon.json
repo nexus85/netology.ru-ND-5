@@ -3,5 +3,9 @@
     { "name": "Bulbasaur", "level": 10 },
     { "name": "Charmander", "level": 5 },
     { "name": "Charizard", "level": 7 },
+    { "name": "Beedrill", "level": 55 },
+    { "name": "Spearow", "level": 10 },
+    { "name": "Feraligatr", "level": 35 },
+    { "name": "Chinchou", "level": 7 },
     { "name": "Squirtle", "level": 4 }
 ]
