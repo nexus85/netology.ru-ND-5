@@ -19,7 +19,7 @@ class NewTransform extends Transform {
     }
 }
 
-const out = new NewTransform();
+const toHex = new NewTransform();
 
-input.pipe(out).pipe(process.stdout);
-input.pipe(out).pipe(output);
+input.pipe(toHex).pipe(process.stdout);
+input.pipe(toHex).pipe(output);
