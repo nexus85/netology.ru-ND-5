@@ -14,13 +14,13 @@ app.post("/", function(req, res) {
     let method = req.body.method;
     let params = req.body.params;
     let id = rand(0, 99);
-    let reply = {
+    const reply = {
         result: null,
         error: null
     };
 
     if (method !== undefined) {
-        reply = reply[method];
+        console.log(method, reply[method]);
     } else {
         reply.error = `Unknown method`;
     }
@@ -32,3 +32,8 @@ app.post("/", function(req, res) {
         "id": id
     });
 });
+
+
+function rand(min, max) {
+    return Math.ceil((max - min + 1) * Math.random()) + min - 1;
+}
