@@ -14,13 +14,13 @@ app.post("/", function(req, res) {
     let method = req.body.method;
     let params = req.body.params;
     let id = rand(0, 99);
-    const reply = {
+    let reply = {
         result: null,
         error: null
     };
 
     if (method !== undefined) {
-        reply = replies[method](params);
+        reply = replies[method](params, users);
     } else {
         reply.error = `Unknown method`;
     }

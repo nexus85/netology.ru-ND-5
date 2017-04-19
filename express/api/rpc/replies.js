@@ -1,4 +1,4 @@
-exports.create = (params) => {
+exports.create = (params, users) => {
     let response = {
         result: null,
         error: null
@@ -19,7 +19,7 @@ exports.create = (params) => {
     return response;
 };
 
-exports.show = (params) => {
+exports.show = (params, users) => {
     let response = {
         result: null,
         error: null
@@ -34,7 +34,7 @@ exports.show = (params) => {
     return response;
 };
 
-exports.update = (params) => {
+exports.update = (params, users) => {
     let response = {
         result: null,
         error: null
@@ -55,7 +55,7 @@ exports.update = (params) => {
     return response;
 };
 
-exports.delete = (params) => {
+exports.delete = (params, users) => {
     let response = {
         result: null,
         error: null
