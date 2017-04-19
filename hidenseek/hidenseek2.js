@@ -11,13 +11,6 @@ const shuffle = function () {
     return Math.random() - 0.5;
 };
 
-const random = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    max = Math.floor(Math.random() * (max - min + 1));
-    return max + min;
-};
-
 function makePath(path, callback) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -39,7 +32,7 @@ function makePath(path, callback) {
             };
             FS.mkdirSync(path);
             resolve();
-        }, 1000);
+        }, 0);
     });
 };
 
@@ -51,7 +44,7 @@ function makeFolders(path) {
                 if (error) throw error;
             });
         }
-    }, 1000);
+    }, 0);
 }
 
 function hidePokemons(path) {
@@ -68,40 +61,44 @@ function hidePokemons(path) {
             lost.push(pokemons.shift());
         };
         return lost;
-    }, 1000);
+    }, 0);
 }
 
 exports.hide = function(path, pokemons) {
     return new Promise((resolve, reject) => {
-        console.log(pokemons);
-        makePath(path)
-            .then(() => makeFolders(path))
-            .then(() => {
-                hidePokemons(path);
-                resolve(pokemons);
-            });
+        setTimeout(() => {
+            console.log(pokemons);
+            makePath(path)
+                .then(() => makeFolders(path))
+                .then(() => {
+                    hidePokemons(path);
+                    resolve(pokemons);
+                });
+        });
     });
 };
 
 
 exports.seek = function(path) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            let found = new PokemonList;
-            var pokemon;
-            for (let folder of folders) {
-                let folderName = `${path}/${folder}`;
-                pokemon = FS.readFile(`${folderName}/pokemon.txt`, 'utf8', (err, data) => {
-                    if (!err) {
-                        resolve(data);
-                    } else {
-                        resolve(null);
-                    }
-                });
+    let found = new PokemonList;
+    var pokemon;
+    Promise.all(folders.map(function(el) {
+        let folderName = `${path}/${el}`;
+        console.log(folderName);
+        FS.readFile(`${folderName}/pokemon.txt`, 'utf8', (err, data) => {
+            if (!err) {
+                return data;
+            } else {
+                return false;
             }
-        }, 1000);
-    }).all()
-        .then((result) => {
-            console.log(result);
+        });
+    }))
+        .then((data) => {
+            for (let item of data) {
+                if (item) {
+                    found.add(item.split('|')[0],item.split('|')[1]);
+                }
+            }
+            console.log(found);
         });
 };

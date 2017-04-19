@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = module.exports = express();
-const reply = require('./replies');
+const replies = require('./replies');
 
 const users = [];
 
@@ -20,7 +20,7 @@ app.post("/", function(req, res) {
     };
 
     if (method !== undefined) {
-        console.log(method, reply[method]);
+        reply = replies[method](params);
     } else {
         reply.error = `Unknown method`;
     }
