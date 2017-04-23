@@ -1,111 +1,95 @@
+"use strict";
+
 const FS = require('fs');
 let {PokemonList} = require('./../init/PokemonList'),
     pokemons = require('./../init/pokemon.json');
 
-//перемешивание массива для .sort()
+
+const folders = ['01','02','03','04','05','06','07','08','09','10'];
+
 const shuffle = function () {
     return Math.random() - 0.5;
-}
+};
 
-//создаем структуру каталогов
 function makePath(path) {
     return new Promise((resolve, reject) => {
-        FS.mkdir(path, error => {
-            if (error) throw error;
-            resolve();
-        });
-    });
-}
-function folderNames(path) {
-    let folders = [];
-    for (let i = 0; i < 11; i++) {
-        let n = i < 10 ? path+`/0${i}` : path+`/${i}`;
-        folders.push(n);
-    }
-    return folders;
-}
-function createFolders(path) {
-    return new Promise((resolve, reject) => {
-        let folders = folderNames(path);
-        Promise.all(folders.map(makePath)).then(() => {
-            resolve();
-        });
-    });
-}
-
-//перемешиваем массив с покемонами и оставляем нужное количество
-function randomPokemons(pokemons) {
-    pokemons.sort(shuffle);
-    let n = pokemons.length < 3 ? pokemons.length : 3;
-    pokemons.splice(0, pokemons.length - n);
-    return pokemons;
-}
-
-//таким же образом определяем случайные папки
-function randomFolders(pokemons) {
-    let arr = [];
-    for (let i = 1; i < 11; i++) {
-        arr.push(i);
-    }
-    arr.sort(shuffle);
-    let n = pokemons.length < 3 ? pokemons.length : 3;
-    arr.splice(0, arr.length - n);
-    return arr;
-}
-
-//прячем покемонов
-function hidePokemons(path, folders, pokemons) {
-    return new Promise((resolve, reject) => {
-        let lost = new PokemonList;
-        for (let i of folders) {
-            i = i < 10 ? `/0${i}` : i = `/${i}`;
-            let text = `${pokemons[0].name}|${pokemons[0].level}`;
-            FS.writeFile(`${path}${i}/pokemon.txt`, text);
-            lost.push(pokemons.shift());
+        const deleteFolderRecursive = function(target) {
+            if (FS.existsSync(target)) {
+                FS.readdirSync(target).forEach(function (file) {
+                    const curPath = target + "/" + file;
+                    if (FS.lstatSync(curPath).isDirectory()) {
+                        deleteFolderRecursive(curPath);
+                    } else {
+                        FS.unlinkSync(curPath);
+                    }
+                });
+                FS.rmdirSync(target);
+            }
+        };
+        if (FS.existsSync(path)) {
+            deleteFolderRecursive(path);
         }
-        console.log(`Hidden pokemons:\r\t`);
-        lost.show();
-        resolve(lost);
+        FS.mkdir(path);
+        resolve();
     });
 }
 
-exports.hide = function (path, pokemons) {
+function makeFolders(path) {
+    for (let folder of folders) {
+        let folderName = `${path}/${folder}`;
+        FS.mkdir(folderName, error => {
+            if (error) throw error;
+        });
+    }
+}
+
+function hidePokemons(path) {
+    let lost = new PokemonList;
+    pokemons.sort(shuffle);
+    folders.sort(shuffle);
+    let tiksCount = pokemons.length < 3 ? pokemons.length : 3;
+    for (let i = 0; i < tiksCount; i++) {
+        let folderName = `${path}/${folders[i]}`;
+        console.log(folderName, pokemons[0]);
+        let text = `${pokemons[0].name}|${pokemons[0].level}`;
+        FS.writeFile(`${folderName}/pokemon.txt`, text);
+        lost.push(pokemons.shift());
+    }
+    return lost;
+}
+
+exports.hide = function(path, pokemons) {
     return new Promise((resolve, reject) => {
-        let lost = randomPokemons(pokemons);
-        let folders = randomFolders(pokemons);
         makePath(path)
-            .then(createFolders(path))
-            .then(hidePokemons(path, folders, lost))
-            .then(resolve());
+            .then(() => makeFolders(path))
+            .then(() => {
+                hidePokemons(path);
+                resolve(pokemons);
+            });
     });
 };
 
-//собираем покемонов
-function findPokemon(path) {
-    return new Promise((resolve, reject) => {
-        FS.readFile(`${path}/pokemon.txt`, 'utf8', (err, data) => {
-            if (!err) {
-                resolve(data);
-            }
-            else {
-                resolve(null);
-            }
-        });
-    });
-}
 
-exports.seek = function (path) {
-    return new Promise((resolve, reject) => {
-        let folders = folderNames(path);
-        Promise.all(folders.map(findPokemon))
-            .then(function (data) {
-                let found = new PokemonList();
-                for (let item of data) {
-                    if (item) {
-                        found.add(item.split('|')[0],item.split('|')[1]);
-                    }
+exports.seek = function(path) {
+    const   found = new PokemonList,
+            options = {encoding: 'utf-8'};
+    Promise.all(folders.map(function(el) {
+        let folderName = `${path}/${el}`;
+        return new Promise((resolve, reject) => {
+            FS.readFile(`${folderName}/pokemon.txt`, options, (err, data) => {
+                if (!err) {
+                    resolve(data);
+                } else {
+                    resolve(null);
                 }
-                resolve(found);
             });
+        });
+    })).then(result => {
+        for (let data of result) {
+            if (data) {
+                found.add(data.split('|')[0], data.split('|')[1]);
+            }
+        }
+        found.show();
     });
 };
