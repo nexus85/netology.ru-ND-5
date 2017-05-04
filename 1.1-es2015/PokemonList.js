@@ -1,4 +1,4 @@
-let Pokemon = require('./../init/Pokemon');
+let Pokemon = require('.//Pokemon');
 
 class PokemonList extends Array {
 
