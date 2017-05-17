@@ -1,0 +1,36 @@
+<form name="vm.MyAccountForm" novalidate>
+    <div class="form-group">
+        <label>Имя</label>
+        <input class="form-control" data-ng-model="vm.MyAccountForm.name" type="text" placeholder="Имя" required ng-minlength="3" name="myAccountName">
+    </div>
+
+    <div ng-messages="vm.MyAccountForm.myAccountName.$error" ng-if="vm.MyAccountForm.myAccountName.$dirty">
+
+        <div ng-message="required" class="alert alert-danger" role="alert">А где имя?</div>
+        <div ng-message="minlength" class="alert alert-danger" role="alert">Имя слишком короткое</div>
+
+    </div>
+
+    <div class="form-group">
+        <label>E-mail</label>
+        <input class="form-control" data-ng-model="vm.MyAccountForm.email" type="email" required placeholder="E-Mail" data-ng-pattern='/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' name="myAccountEmail">
+    </div>
+
+    <div ng-messages="vm.MyAccountForm.myAccountEmail.$error" ng-if="vm.MyAccountForm.myAccountEmail.$dirty">
+        <div ng-message="required" class="alert alert-danger">E-mail тоже обязателен!</div>
+        <div ng-message="pattern" class="alert alert-danger">Введите правильный e-mail</div>
+    </div>
+
+    <div class="form-group">
+        <label>Телефон</label>
+        <input class="form-control" data-ng-model="vm.MyAccountForm.phone" type="tel" placeholder="Телефон" data-ng-pattern='/^[0-9\-\+]{5,21}$/' name="myAccountPhone">
+    </div>
+
+    <div ng-messages="vm.MyAccountForm.myAccountPhone.$error" ng-if="vm.MyAccountForm.myAccountPhone.$dirty">
+        <div ng-message="pattern" class="alert alert-danger">Это не похоже на телефон</div>
+    </div>
+
+    <button type="submit" class="btn btn-default" data-ng-disabled="vm.MyAccountForm.$invalid">Добавить
+    </button>
+
+</form>
