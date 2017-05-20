@@ -10,13 +10,11 @@ angular
             return {
 
                 getPokemons: function() {
-                    delete $http.defaults.headers.common["application-id"];
-                    delete $http.defaults.headers.common["secret-key"];
-                    return $http.get('http://pokeapi.co/api/v2/pokemon/?limit=10');
+                    return $http.get('https://api.backendless.com/v1/data/pokemon');
                 },
 
                 getPokemon: function(pokemonId) {
-                    return $http.get('http://pokeapi.co/api/v2/pokemon/' + pokemonId);
+                    return $http.get('https://api.backendless.com/v1/data/pokemon/' + pokemonId);
                 },
 
                 createPokemon: function(pokemonData) {
