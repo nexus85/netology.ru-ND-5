@@ -12,11 +12,15 @@
 <form name="pokemonEditForm" novalidate>
     <div class="form-group">
         <label>Имя</label>
-        <input class="form-control" ng-model="editPokemonData.name" type="text" placeholder="Имя" value="pokemon.name" required>
+        <p class="form-control-static">{{pokemon.name | uppercase}}</p>
     </div>
     <div class="form-group">
         <label>Вес</label>
-        <input class="form-control" ng-model="editPokemonData.weight" type="text" placeholder="Вес" value="pokemon.weight">
+        <input class="form-control" ng-model="editPokemonData.weight" type="text" placeholder="Вес" value="{{pokemon.weight}}">
+    </div>
+    <div class="form-group">
+        <label>Рост</label>
+        <input class="form-control" ng-model="editPokemonData.height" type="text" placeholder="Рост" value="{{pokemon.height}}">
     </div>
     <button type="submit" class="btn btn-default" ng-click="editPokemon(pokemonId, editPokemonData)" ng-disabled="pokemonForm.$invalid">Сохранить</button>
 </form>

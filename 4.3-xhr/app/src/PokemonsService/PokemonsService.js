@@ -2,9 +2,16 @@ angular
     .module('PokemonApp')
     .factory('PokemonsService', function($http) {
 
+            $http.defaults.headers.common = {
+                "application-id": "D87AA1BE-B938-22D6-FFCF-86452D634100",
+                "secret-key": "D9159766-80D3-3213-FF41-3FE21EC7A400"
+            };
+
             return {
 
                 getPokemons: function() {
+                    delete $http.defaults.headers.common["application-id"];
+                    delete $http.defaults.headers.common["secret-key"];
                     return $http.get('http://pokeapi.co/api/v2/pokemon/?limit=10');
                 },
 
@@ -16,11 +23,6 @@ angular
                     return $http({
                         method: 'POST',
                         url: 'https://api.backendless.com/v1/data/pokemon',
-                        headers: {
-                            "application-id": "D87AA1BE-B938-22D6-FFCF-86452D634100",
-                            "secret-key": "D9159766-80D3-3213-FF41-3FE21EC7A400"
-
-                        },
                         data: pokemonData
                     });
                 },
@@ -29,11 +31,6 @@ angular
                     return $http({
                         method: 'PUT',
                         url: 'https://api.backendless.com/v1/data/pokemon/' + pokemonId,
-                        headers: {
-                            "application-id": "D87AA1BE-B938-22D6-FFCF-86452D634100",
-                            "secret-key": "D9159766-80D3-3213-FF41-3FE21EC7A400"
-
-                        },
                         data: pokemonData
                     });
                 },
@@ -42,11 +39,6 @@ angular
                     return $http({
                         method: 'DELETE',
                         url: 'https://api.backendless.com/v1/data/pokemon/' + pokemonId,
-                        headers: {
-                            "application-id": "4B730C92-F81E-236B-FFF0-6651FE882800",
-                            "secret-key": "CB6DE86C-6069-86C4-FF1C-9049D5AC9400"
-
-                        }
                     });
                 }
 
