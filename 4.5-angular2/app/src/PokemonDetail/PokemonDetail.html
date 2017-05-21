@@ -1,0 +1,36 @@
+<div ng-if="!pokemonLoaded">
+    <span class="glyphicon glyphicon-refresh"></span>
+    Loading...
+</div>
+
+<div class="alert alert-danger" role="alert" ng-if="notfoundError">Покемон не найден</div>
+
+<uib-tabset active="activeTab">
+
+    <uib-tab heading="Инфо" disable="disableControlTab">
+
+        <h1 class="media-heading">{{pokemon.name | uppercase }}</h1>
+        <p>Вес:
+            {{pokemon.weight}}, рост:
+            {{pokemon.height}}</p>
+
+    </uib-tab>
+
+    <uib-tab heading="Операции" >
+
+        <md-button class="md-warn" ng-click="deletePokemon(pokemon.objectId)">
+            <span class="glyphicon glyphicon-trash"></span>
+            Удалить
+        </md-button>
+        <md-button>
+            <a href="#!/edit/{{pokemon.objectId}}">
+                Редактировать
+            </a>
+        </md-button>
+
+    </uib-tab>
+
+</uib-tabset>
+
+<div class="alert alert-success" role="alert" ng-if="deletionSuccess">Пока, покемон!</div>
+<div class="alert alert-danger" role="alert" ng-if="deletionError">Покемоны не сдаются!</div>

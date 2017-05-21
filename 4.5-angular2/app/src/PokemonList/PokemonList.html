@@ -1,0 +1,10 @@
+<md-list class="list-group">
+
+    <md-list-item ng-repeat="pokemon in $ctrl.pokemons" ng-click="null">
+        <a href="#!/pokemons/{{pokemon.objectId }}" class="md-list-item-text" layout="column">
+            {{pokemon.name | uppercase }}
+        </a>
+    </md-list-item>
+
+    <md-divider ></md-divider>
+</md-list>
