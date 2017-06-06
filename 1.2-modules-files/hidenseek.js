@@ -34,7 +34,6 @@ function makePath(path) {
                     fs.mkdirSync(path);
                     resolve(path);
                 } else {
-                    console.log(err);
                     reject(err);
                 }
             } else {

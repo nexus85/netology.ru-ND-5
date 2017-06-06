@@ -1,7 +1,7 @@
 "use strict";
 
-let {Pokemon, PokemonList}  = require('./../1/PokemonList'),
-    pokemons                = require('./../1/pokemon.json');
+let {Pokemon, PokemonList}  = require('./../1.1-es2015/PokemonList'),
+    pokemons                = require('./../1.1-es2015/pokemon.json');
 
 let hidenseek = require('./hidenseek');
 
